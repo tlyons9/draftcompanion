@@ -37,13 +37,13 @@ def serve():
     players = pandas.read_csv('players.csv',header=0,index_col=0)
     for player in players:
         if players[player]["Position"] == "QB":
-            if len(qbs) < 5: qbs.append(player)
+            if len(qbs) < 5: qbs.append([player,players[player]["ECR"]])
         elif players[player]["Position"] == "RB":
-            if len(rbs) < 5: rbs.append(player)
+            if len(rbs) < 5: rbs.append([player,players[player]["ECR"]])
         elif players[player]["Position"] == "WR":
-            if len(wrs) < 5: wrs.append(player)
+            if len(wrs) < 5: wrs.append([player,players[player]["ECR"]])
         elif players[player]["Position"] == "TE":
-            if len(tes) < 5: tes.append(player)
+            if len(tes) < 5: tes.append([player,players[player]["ECR"]])
         else:
             continue
 

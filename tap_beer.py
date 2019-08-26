@@ -4,10 +4,8 @@ import pandas
 
 # starting off, we need to get the beer sheet from the internet
 # given the league settings, get the correct beer sheet.
-def tap(teams, ppr, qbs, rbs, wrs, tes, rwt, rw, wt, qrwt, pptd, pretd, prutd, pppy, ppruy, pprey, ppi, ppca, ppco, auction):
+def tap(url):
     
-    url = 'https://footballabsurdity.com//wp-content/plugins/BeerSheetRequests/SHEETS/'+teams+','+ppr+','+qbs+','+rbs+','+wrs+','+tes+','+rwt+','+rw+','+wt+','+qrwt+','+pptd+','+pretd+','+prutd+','+pppy+','+ppruy+','+pprey+','+ppi+','+ppca+','+ppco+','+auction+'.csv'
-
     df = pandas.read_csv(url)
     df.to_csv('tap.csv')
 
@@ -21,20 +19,22 @@ def pour():
         del sip["Name"]
         players[name] = sip
 
-    return players
+    playersdf = pandas.DataFrame(players)
+    playersdf.to_csv('players.csv')
 
 # remove a player from the available players list
-def draft(players, player):
-    del players[player]
-    return players
+def draft(player):
+    players = pandas.read_csv('players.csv',header=0,index_col=0)
+    players = players.drop(columns=player)
+    players.to_csv('players.csv')
 
 # display top 5 players available from each role
-def serve(players):
+def serve():
     qbs = []
     rbs = []
     wrs = []
     tes = []
-
+    players = pandas.read_csv('players.csv',header=0,index_col=0)
     for player in players:
         if players[player]["Position"] == "QB":
             if len(qbs) < 5: qbs.append(player)
@@ -42,31 +42,9 @@ def serve(players):
             if len(rbs) < 5: rbs.append(player)
         elif players[player]["Position"] == "WR":
             if len(wrs) < 5: wrs.append(player)
+        elif players[player]["Position"] == "TE":
+            if len(tes) < 5: tes.append(player)
         else:
-            if len(tes) < 5: tes.append(players)
+            continue
 
     return qbs, rbs, wrs, tes
-
-def main():
-    tap('12','0','1','2','2','1','1','0','0','0','4','6','6','0.04','0.1','0.1','-2','0','0','0')
-    players = pour()
-
-    while True:
-        draft(players, player)
-        qbs, rbs, wrs, tes = serve(players)
-        print("QBs:")
-        for q in qbs:
-            print(q)
-        print("RBs:")
-        for r in rbs:
-            print(r)
-        print("WRs:")
-        for w in wrs:
-            print(w)
-        print("TEs:")
-        for t in tes:
-            print(t)
-        player = input("Most Recently Drafted Player: ").title()
-        
-if __name__ == "__main__":
-    main()

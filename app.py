@@ -18,15 +18,15 @@ def grab_dict_post():
 
 @app.route('/draft')
 def start_draft():
-    qbs, rbs, wrs, tes, ecr = serve()
-    return render_template('content.html', qbs=qbs, rbs=rbs, wrs=wrs, tes=tes, ecr=ecr)
+    qbs, rbs, wrs, tes, ecr, ks, dst = serve()
+    return render_template('content.html', qbs=qbs, rbs=rbs, wrs=wrs, tes=tes, ecr=ecr, ks=ks, dst=dst)
 
 @app.route('/draft', methods=['POST'])
 def draft_player():
     player = request.form['player-name']
     draft(player)
-    qbs, rbs, wrs, tes, ecr = serve()
-    return render_template('content.html', qbs=qbs, rbs=rbs, wrs=wrs, tes=tes, ecr=ecr)
+    qbs, rbs, wrs, tes, ecr, ks, dst = serve()
+    return render_template('content.html', qbs=qbs, rbs=rbs, wrs=wrs, tes=tes, ecr=ecr, ks=ks, dst=dst)
 
 # @app.route('/receipts/<filename>')
 # def show_receipt(filename):

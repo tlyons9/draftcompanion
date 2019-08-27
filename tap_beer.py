@@ -34,7 +34,13 @@ def serve():
     rbs = []
     wrs = []
     tes = []
+    ecr = []
     players = pandas.read_csv('players.csv',header=0,index_col=0)
+    playersECR = players.T
+    playersECR["ECR"] = playersECR["ECR"].astype(float)
+    playersECR = playersECR.sort_values(by=["ECR"])
+    playersECR = playersECR.T
+    
     for player in players:
         if players[player]["Position"] == "QB":
             if len(qbs) < 10: qbs.append([player,players[player]["ECR"],players[player]["ECR vs ADP"]])
@@ -47,4 +53,8 @@ def serve():
         else:
             continue
 
-    return qbs, rbs, wrs, tes
+    for playerECR in playersECR.keys():
+        if len(ecr) < 10: ecr.append([playerECR,playersECR[playerECR]["ECR"],playersECR[playerECR]["ECR vs ADP"]])
+
+
+    return qbs, rbs, wrs, tes, ecr

@@ -22,7 +22,7 @@ def pour():
 
     players = {}
     for sip in pour:
-        name = sip["Name"]
+        name = sip["Name"].title()
         del sip["Name"]
         players[name] = sip
 
@@ -31,6 +31,7 @@ def pour():
 
 # remove a player from the available players list
 def draft(player):
+    player = player.title()
     if player in kickers:
         kickers.remove(player)
     elif player in defenses:
